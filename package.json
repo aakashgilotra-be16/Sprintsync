@@ -1,0 +1,45 @@
+{
+  "name": "sprintsync-app",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Cloud-synchronized agile capacity intelligence platform",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "type-check": "tsc --noEmit",
+    "security:audit": "npm audit --audit-level=moderate && echo '✅ Security audit passed'",
+    "security:check": "npm run security:audit && npm run type-check && npm run lint"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.90.16",
+    "firebase": "^10.7.0",
+    "lucide-react": "^0.294.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "terser": "^5.44.1",
+    "zustand": "^5.0.9"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "@types/node": "^20.10.0",
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^8.52.0",
+    "@typescript-eslint/parser": "^8.52.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.33.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "globals": "^15.0.0",
+    "postcss": "^8.4.32",
+    "prettier": "^3.7.4",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.9.3",
+    "vite": "^5.0.8"
+  }
+}
