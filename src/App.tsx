@@ -14,6 +14,8 @@ import {
   UserView,
   CalendarView,
   ChatBot,
+  SprintCapacitySidebar,
+  CapacityModal,
 } from './components/index';
 import { callGemini } from './services/aiService';
 import {
@@ -63,6 +65,10 @@ const AppContent: React.FC = () => {
     currentCalMonth,
     setCurrentCalMonth,
   } = useAppStore();
+
+  const [selectedSprintForCapacity, setSelectedSprintForCapacity] = React.useState<Sprint | null>(
+    null
+  );
 
   // Calculate dev count
   const devCount = React.useMemo(
@@ -192,6 +198,10 @@ const AppContent: React.FC = () => {
     <div className="min-h-screen bg-[#F4F5F7] text-[#172B4D] font-sans pb-10 antialiased selection:bg-[#0052CC] selection:text-white">
       <AIResponseModal aiResult={aiResult} setAiResult={setAiResult} />
       <ChatBot onAddLeave={addLeave} people={people} sprints={sprints} />
+      <SprintCapacitySidebar
+        data={{ people, sprints, leaves, holidays }}
+        onSelectSprint={setSelectedSprintForCapacity}
+      />
 
       {error && (
         <div className="fixed bottom-6 right-20 z-[200] bg-[#DE350B] text-white px-4 py-3 rounded shadow-xl flex items-center gap-2 animate-in slide-in-from-right duration-300">
@@ -239,45 +249,56 @@ const AppContent: React.FC = () => {
         </div>
       </nav>
 
-      <main className="max-w-6xl mx-auto px-8 py-10">
-        {activeTab === 'admin' && (
-          <AdminView
-            data={{ people, sprints, leaves, holidays }}
-            devCount={devCount}
-            sprintNameInput={sprintNameInput}
-            setSprintNameInput={setSprintNameInput}
-            aiLoading={aiLoading}
-            setAiLoading={setAiLoading}
-            isXlsxLoading={isXlsxLoading}
-            handleFileUpload={handleFileUpload}
-            analyzeSprintRisk={handleAnalyzeSprintRisk}
-            setError={setError}
-            addPerson={addPerson}
-            addHoliday={addHoliday}
-            addSprint={handleAddSprint}
-            deleteDocItem={deleteItem}
-            callGemini={callGemini}
-          />
-        )}
-        {activeTab === 'user' && (
-          <UserView
-            data={{ people, sprints, leaves, holidays }}
-            formLeave={formLeave}
-            setFormLeave={setFormLeave}
-            addLeave={addLeave}
-            impacts={impacts}
-            generateHandover={handleGenerateHandover}
-            deleteDocItem={deleteItem}
-          />
-        )}
-        {activeTab === 'calendar' && (
-          <CalendarView
-            currentCalMonth={currentCalMonth}
-            setCurrentCalMonth={setCurrentCalMonth}
-            data={{ people, sprints, leaves, holidays }}
-          />
-        )}
+      <main className="ml-72 transition-all duration-300 px-8 py-10 min-h-[calc(100vh-4rem)]">
+        <div className="max-w-6xl">
+          {activeTab === 'admin' && (
+            <AdminView
+              data={{ people, sprints, leaves, holidays }}
+              devCount={devCount}
+              sprintNameInput={sprintNameInput}
+              setSprintNameInput={setSprintNameInput}
+              aiLoading={aiLoading}
+              setAiLoading={setAiLoading}
+              isXlsxLoading={isXlsxLoading}
+              handleFileUpload={handleFileUpload}
+              analyzeSprintRisk={handleAnalyzeSprintRisk}
+              setError={setError}
+              addPerson={addPerson}
+              addHoliday={addHoliday}
+              addSprint={handleAddSprint}
+              deleteDocItem={deleteItem}
+              callGemini={callGemini}
+            />
+          )}
+          {activeTab === 'user' && (
+            <UserView
+              data={{ people, sprints, leaves, holidays }}
+              formLeave={formLeave}
+              setFormLeave={setFormLeave}
+              addLeave={addLeave}
+              impacts={impacts}
+              generateHandover={handleGenerateHandover}
+              deleteDocItem={deleteItem}
+            />
+          )}
+          {activeTab === 'calendar' && (
+            <CalendarView
+              currentCalMonth={currentCalMonth}
+              setCurrentCalMonth={setCurrentCalMonth}
+              data={{ people, sprints, leaves, holidays }}
+            />
+          )}
+        </div>
       </main>
+
+      {/* Capacity Modal */}
+      {selectedSprintForCapacity && (
+        <CapacityModal
+          sprint={selectedSprintForCapacity}
+          data={{ people, sprints, leaves, holidays }}
+          onClose={() => setSelectedSprintForCapacity(null)}
+        />
+      )}
 
       <footer className="text-center py-8 text-[10px] text-gray-400 uppercase tracking-[0.2em] font-black opacity-30">
         Cloud Synchronized Agile Capacity Intelligence
