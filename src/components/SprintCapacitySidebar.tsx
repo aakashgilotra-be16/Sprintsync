@@ -26,10 +26,13 @@ export const SprintCapacitySidebar: React.FC<SprintCapacitySidebarProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
 
+  // Get current dev count
+  const currentDevCount = data.people.filter((p) => p.dept?.toLowerCase() === 'dev').length;
+
   // Calculate capacity for each sprint
   const sprintCapacities = data.sprints.map((sprint): SprintCapacityData => {
     const workingDays = getWorkingDaysCount(sprint.start, sprint.end, data.holidays);
-    const devCount = data.people.filter((p) => p.dept?.toLowerCase() === 'dev').length;
+    const devCount = sprint.devCountAtCreation || currentDevCount; // Use devCountAtCreation if available
     const totalCapacity = devCount * workingDays * 8; // 8 hours per day
 
     // Calculate capacity lost to leaves
@@ -103,28 +106,28 @@ export const SprintCapacitySidebar: React.FC<SprintCapacitySidebarProps> = ({
                   <button
                     key={capacity.sprint.id}
                     onClick={() => onSelectSprint(capacity.sprint)}
-                    className={`w-full p-3 rounded-lg border text-left transition-all hover:shadow-md ${getCapacityColor(capacity.utilization)}`}
+                    className={`w-full p-3 rounded-lg border text-left transition-all hover:shadow-md overflow-hidden ${getCapacityColor(capacity.utilization)}`}
                   >
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <p className="font-bold text-xs text-[#172B4D]">
+                    <div className="flex justify-between items-start gap-2 mb-2">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-bold text-xs text-[#172B4D] truncate">
                           {capacity.sprint.name}
                         </p>
                         <p className="text-[10px] text-gray-500 mt-0.5">
                           {formatDate(capacity.sprint.start)}
                         </p>
                       </div>
-                      <Users size={14} className="text-[#6B778C]" />
+                      <Users size={14} className="text-[#6B778C] flex-shrink-0" />
                     </div>
 
-                    <div className="space-y-1.5">
+                    <div className="space-y-2">
                       <div>
-                        <div className="flex justify-between items-center mb-1">
+                        <div className="flex justify-between items-center gap-1 mb-1">
                           <span className="text-[9px] font-black text-[#6B778C] uppercase">
                             Total
                           </span>
-                          <span className={`text-[10px] font-black ${getCapacityTextColor(capacity.utilization)}`}>
-                            {capacity.totalAvailable}h / {capacity.totalCapacity}h
+                          <span className={`text-[10px] font-black ${getCapacityTextColor(capacity.utilization)} whitespace-nowrap`}>
+                            {capacity.totalAvailable}h
                           </span>
                         </div>
                         <div className="w-full bg-gray-200 rounded-full h-1.5">
@@ -141,7 +144,7 @@ export const SprintCapacitySidebar: React.FC<SprintCapacitySidebarProps> = ({
                         </div>
                       </div>
 
-                      <div className="text-[9px] text-gray-600 pt-1">
+                      <div className="text-[9px] text-gray-600">
                         <p>
                           <strong>Usage:</strong> {capacity.utilization.toFixed(1)}%
                         </p>
