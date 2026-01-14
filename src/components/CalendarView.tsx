@@ -77,28 +77,38 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
             const items = data.leaves.filter(
               (l) => dateStr >= l.start && dateStr <= l.end
             );
+            const today = new Date();
+            const isToday = date.getDate() === today.getDate() && 
+                           date.getMonth() === today.getMonth() && 
+                           date.getFullYear() === today.getFullYear();
 
             return (
               <div
                 key={i}
-                className={`h-32 p-2 border border-[#DFE1E6] rounded-xl flex flex-col ${
-                  isWeekend ? 'bg-[#F4F5F7]' : 'bg-white'
+                className={`h-32 p-2 border-2 rounded-xl flex flex-col ${
+                  isToday
+                    ? 'border-[#0052CC] bg-blue-50'
+                    : isWeekend
+                      ? 'border-[#DFE1E6] bg-[#F4F5F7]'
+                      : 'border-[#DFE1E6] bg-white'
                 } ${
-                  holiday ? 'border-red-200 bg-red-50/20' : ''
+                  holiday ? 'border-red-300 bg-red-50/30' : ''
                 } hover:border-[#4C9AFF] transition-all group overflow-hidden`}
               >
                 <div className="flex justify-between items-start mb-1">
-                  <span
-                    className={`text-[12px] font-black ${
-                      isWeekend
-                        ? 'text-gray-300'
-                        : holiday
-                          ? 'text-red-600'
-                          : 'text-[#172B4D]'
+                  <div
+                    className={`text-[12px] font-black flex items-center justify-center ${
+                      isToday
+                        ? 'bg-[#0052CC] text-white w-6 h-6 rounded-full'
+                        : isWeekend
+                          ? 'text-gray-300'
+                          : holiday
+                            ? 'text-red-600'
+                            : 'text-[#172B4D]'
                     }`}
                   >
                     {i + 1}
-                  </span>
+                  </div>
                   {holiday && (
                     <div
                       className="bg-red-500 text-white text-[7px] font-black px-1 py-0.5 rounded uppercase leading-none shadow-sm"

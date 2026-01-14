@@ -1,6 +1,7 @@
 /**
  * Firebase Configuration
  * Handles initialization and exports Firebase services
+ * Supports environment-based database switching (dev vs prod)
  */
 
 import { initializeApp } from 'firebase/app';
@@ -8,6 +9,20 @@ import { getAuth, signInAnonymously, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import type { Auth, User } from 'firebase/auth';
 import type { Firestore } from 'firebase/firestore';
+
+/**
+ * Determine environment: use VITE_ENV or check if running locally
+ * VITE_ENV should be set in .env files:
+ * - .env.local (production)
+ * - .env.local.dev (development - for local testing)
+ */
+const getEnvironment = (): 'development' | 'production' => {
+  const envMode = import.meta.env.VITE_ENV || 'production';
+  return (envMode as 'development' | 'production') || 'production';
+};
+
+const ENVIRONMENT = getEnvironment();
+const IS_DEVELOPMENT = ENVIRONMENT === 'development';
 
 /**
  * Validate required Firebase environment variables
@@ -48,6 +63,13 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
+// Log environment info for debugging (only in dev)
+if (IS_DEVELOPMENT && typeof window !== 'undefined') {
+  console.log(
+    `🔧 Running in ${ENVIRONMENT} mode - Using Firebase Project: ${firebaseConfig.projectId}`
+  );
+}
+
 const app = initializeApp(firebaseConfig);
 const auth: Auth = getAuth(app);
 const db: Firestore = getFirestore(app);
@@ -60,4 +82,6 @@ export {
   type User,
   type Auth,
   type Firestore,
+  ENVIRONMENT,
+  IS_DEVELOPMENT,
 };

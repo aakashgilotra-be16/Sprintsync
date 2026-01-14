@@ -3,3 +3,5 @@ export { AdminView } from './AdminView';
 export { UserView } from './UserView';
 export { CalendarView } from './CalendarView';
 export { ChatBot } from './ChatBot';
+export { CapacityModal } from './CapacityModal';
+export { SprintCapacitySidebar } from './SprintCapacitySidebar';
