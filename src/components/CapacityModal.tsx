@@ -151,7 +151,7 @@ export const CapacityModal: React.FC<CapacityModalProps> = ({
                 <p className="text-lg font-black text-[#006644]">{totalAvailableCapacity}h</p>
               </div>
               <div>
-                <p className="text-[10px] font-black text-[#6B778C] uppercase mb-1">Usage</p>
+                <p className="text-[10px] font-black text-[#6B778C] uppercase mb-1">Capacity Change %</p>
                 <p className={`text-lg font-black ${teamUtilization > 30 ? 'text-red-600' : teamUtilization > 15 ? 'text-yellow-600' : 'text-green-600'}`}>
                   {teamUtilization.toFixed(1)}%
                 </p>
@@ -162,10 +162,10 @@ export const CapacityModal: React.FC<CapacityModalProps> = ({
             <div className="mt-4">
               <div className="flex justify-between items-center mb-2">
                 <span className="text-[10px] font-black text-[#6B778C] uppercase">
-                  Capacity Utilization
+                  Capacity Change %
                 </span>
                 <span className="text-[10px] text-gray-600">
-                  {totalLeaveHours}h / {totalBaseCapacity}h
+                  {totalAvailableCapacity}h / {totalBaseCapacity}h
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
@@ -177,7 +177,7 @@ export const CapacityModal: React.FC<CapacityModalProps> = ({
                         ? 'bg-yellow-500'
                         : 'bg-green-500'
                   }`}
-                  style={{ width: `${Math.min(teamUtilization, 100)}%` }}
+                  style={{ width: `${Math.min(100 - teamUtilization, 100)}%` }}
                 />
               </div>
             </div>
@@ -253,7 +253,7 @@ export const CapacityModal: React.FC<CapacityModalProps> = ({
                                 ? 'bg-yellow-500'
                                 : 'bg-green-500'
                           }`}
-                          style={{ width: `${Math.min(dev.utilization, 100)}%` }}
+                          style={{ width: `${Math.min(100 - dev.utilization, 100)}%` }}
                         />
                       </div>
 

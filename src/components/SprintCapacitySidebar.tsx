@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { ChevronDown, Users, TrendingUp } from 'lucide-react';
+import { ChevronRight, Users, TrendingUp } from 'lucide-react';
 import { formatDate, getWorkingDaysCount, getOverlapWorkingDays } from '../utils/dateUtils';
 import type { AppData, Sprint } from '../types/index';
 
@@ -80,17 +80,17 @@ export const SprintCapacitySidebar: React.FC<SprintCapacitySidebarProps> = ({
         {/* Toggle Button */}
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="absolute -right-3 top-4 bg-white border border-[#DFE1E6] rounded-full p-1 hover:bg-[#F4F5F7] transition-all"
+          className="sticky top-2 right-2 float-right bg-white border border-[#DFE1E6] rounded-full p-1 hover:bg-[#F4F5F7] transition-all z-50 mb-2"
           title={isExpanded ? 'Collapse' : 'Expand'}
         >
-          <ChevronDown
+          <ChevronRight
             size={16}
             className={`transition-transform ${isExpanded ? 'rotate-180' : ''}`}
           />
         </button>
 
         {isExpanded && (
-          <div className="p-4">
+          <div className="p-4 pt-2 clear-both">
             <div className="flex items-center gap-2 mb-4">
               <TrendingUp size={18} className="text-[#0052CC]" />
               <h3 className="font-black text-sm text-[#172B4D] uppercase tracking-widest">
@@ -139,14 +139,14 @@ export const SprintCapacitySidebar: React.FC<SprintCapacitySidebarProps> = ({
                                   ? 'bg-yellow-500'
                                   : 'bg-green-500'
                             }`}
-                            style={{ width: `${Math.min(capacity.utilization, 100)}%` }}
+                            style={{ width: `${Math.min(100 - capacity.utilization, 100)}%` }}
                           />
                         </div>
                       </div>
 
                       <div className="text-[9px] text-gray-600">
                         <p>
-                          <strong>Usage:</strong> {capacity.utilization.toFixed(1)}%
+                          <strong>Capacity Change(%):</strong> {capacity.utilization.toFixed(1)}%
                         </p>
                       </div>
                     </div>

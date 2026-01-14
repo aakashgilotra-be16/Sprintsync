@@ -1,9 +1,13 @@
-node_modules/
-dist/
+# Environment variables (NEVER commit credentials!)
 .env
 .env.local
 .env.*.local
-*.log
+.env.local.backup*
+.env.local.*.backup*
+
+# Build outputs
+node_modules/
+dist/
 *.sln
 *.suo
 *.vcxproj
